@@ -69,7 +69,7 @@ public class Management
 		@Override
 		public String toString()
 		{
-			return "ID: " + id + "\tFirst Name: " + firstName + " \t Last Name: " + lastName + "\t Gender: " + sex;
+			return "ID: \t" + id + "\tFirst Name: " + firstName + " \t Last Name: " + lastName + "\t Gender: " + sex;
 		}
 		
 		

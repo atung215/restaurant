@@ -23,7 +23,7 @@ public class TestDriver
 		ArrayList<Employee> employee = StaffManagement.createEmployee();
 		StaffManagement.printEmployees(employee);
 		
-		log.info("------------FIND EMPLOYEES------------");
+		log.info("\n------------FIND EMPLOYEES------------");
 		//System.out.println("------------FIND EMPLOYEES------------");
 		ArrayList<Employee> findEmps = StaffManagement.searchFirstName(employee, "RUSSELL");
 		StaffManagement.printEmployees(findEmps);
@@ -33,7 +33,7 @@ public class TestDriver
 		ArrayList<Management> manager = StaffManagement.createManagement();
 		StaffManagement.printManagements(manager);
 		
-		log.info("------------FIND MANAGEMENTS------------");
+		log.info("\n------------FIND MANAGEMENTS------------");
 		//System.out.println("------------FIND MANAGEMENTS------------");
 		ArrayList<Management> findMngrs = StaffManagement.searchFirstNameRegex(manager, "DANA");
 		StaffManagement.printManagements(findMngrs);

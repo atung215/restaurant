@@ -70,7 +70,7 @@ public class Employee implements Comparable<Employee>
 	@Override
 	public String toString()
 	{
-		return "First Name: " + firstName + "\t Last Name: " + lastName + "\tGender: " + sex;
+		return "ID: \t" + id + "\tFirst Name: " + firstName + "\t Last Name: " + lastName + "\tGender: " + sex;
 	}
 
 	@Override

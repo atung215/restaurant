@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
+import ca.bcit.comp2613.restaurant.TestDriver;
 import ca.bcit.comp2613.restaurant.model.Employee;
 import ca.bcit.comp2613.restaurant.model.Gender;
 import ca.bcit.comp2613.restaurant.model.Management;
@@ -12,6 +16,8 @@ import ca.bcit.comp2613.restaurant.model.Management;
 
 public class StaffManagement
 {
+	
+	
 	public static String NAME_STRING = "This is a string instance that creates random words"
 			+ " to use for names it will be splitted with a method to insert the field in the name property"
 			+ " it will be capitalized after it is insert into the property to have clearer view"
@@ -75,10 +81,14 @@ public class StaffManagement
 	
 	public static void printEmployees(ArrayList<Employee> employees) 
 	{
+		PropertyConfigurator.configure(StaffManagement.class.getResourceAsStream("StaffManagelog4j.properties")	);
+		Logger log = Logger.getLogger(StaffManagement.class);
+		
+		
 		Collections.sort(employees);
 		for (Employee employee : employees)
 		{
-			System.out.println("id: " + employee.getId() + "  " + employee);
+			log.info( employee);
 		}
 		
 	}
@@ -102,6 +112,9 @@ public class StaffManagement
 	
 	public static void printManagements(ArrayList<Management> managers)
 	{
+		PropertyConfigurator.configure(StaffManagement.class.getResourceAsStream("StaffManagelog4j.properties")	);
+		Logger log = Logger.getLogger(StaffManagement.class);
+		
 		Comparator<Management> mngsCompare = new Comparator<Management>()
 				{
 					public int compare(Management m1, Management m2)
@@ -117,7 +130,7 @@ public class StaffManagement
 		Collections.sort(managers, mngsCompare);
 		for (Management manager : managers)
 		{
-			System.out.println(manager);
+			log.info(manager);
 		}
 	}
 	
@@ -137,12 +150,15 @@ public class StaffManagement
 	
 	public static ArrayList<Management> searchFirstNameRegex(ArrayList<Management> managers, String regex)
 	{
+		PropertyConfigurator.configure(StaffManagement.class.getResourceAsStream("StaffManagelog4j.properties")	);
+		Logger log = Logger.getLogger(StaffManagement.class);
+		
 		ArrayList<Management> findMngr = new ArrayList<>();
 		for(Management manager : managers)
 		{
 			if(manager.getFirstName().equals(regex))
 			{
-				System.out.println("id: "+ manager.getId() + "  " + manager);
+				log.info( manager);
 			}
 		}
 		return findMngr;
