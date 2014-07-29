@@ -2,7 +2,7 @@ package ca.bcit.comp2613.restaurant;
 
 import javax.swing.table.DefaultTableModel;
 
-public class SwingManagerModel extends DefaultTableModel 
+public class NonEditableDefaultTableModel extends DefaultTableModel 
 {
 	
 	@Override

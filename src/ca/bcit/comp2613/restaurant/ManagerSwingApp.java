@@ -31,7 +31,7 @@ public class ManagerSwingApp
 	private JTextField lastNameTextField;
 	private JLabel lblLastName;
 	private JLabel lblId;
-	private SwingManagerModel swingManagerModel;
+	private NonEditableDefaultTableModel nonEditableDefaultTableModel;
 	public String[] columnNames = new String[] { "id", "First Name",
 			"Last Name"};
 	private JTextField idTextField;
@@ -144,7 +144,7 @@ public class ManagerSwingApp
 			data[i][2] = manager.getLastName();
 			i++;
 		}
-		swingManagerModel.setDataVector(data, columnNames);
+		nonEditableDefaultTableModel.setDataVector(data, columnNames);
 		table.repaint();
 	}
 
@@ -159,9 +159,9 @@ public class ManagerSwingApp
 		frame.getContentPane().setLayout(null);
 
 		// table = new JTable();
-		swingManagerModel = new SwingManagerModel();
+		nonEditableDefaultTableModel = new NonEditableDefaultTableModel();
 
-		table = new JTable(swingManagerModel);
+		table = new JTable(nonEditableDefaultTableModel);
 
 		// table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		// table.setBounds(0, 11, 585, 247);

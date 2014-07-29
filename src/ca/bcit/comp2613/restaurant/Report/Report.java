@@ -1,4 +1,4 @@
-package ca.bcit.comp2613.restaurant;
+package ca.bcit.comp2613.restaurant.Report;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +9,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import ca.bcit.comp2613.restaurant.TestDriver;
 import ca.bcit.comp2613.restaurant.model.Employee;
 import ca.bcit.comp2613.restaurant.util.EmployeeManagement;
 
