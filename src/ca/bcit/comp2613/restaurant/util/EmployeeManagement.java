@@ -2,19 +2,16 @@ package ca.bcit.comp2613.restaurant.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Random;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import ca.bcit.comp2613.restaurant.TestDriver;
 import ca.bcit.comp2613.restaurant.model.Employee;
 import ca.bcit.comp2613.restaurant.model.Gender;
-import ca.bcit.comp2613.restaurant.model.Management;
 
 
-public class StaffManagement
+public class EmployeeManagement
 {
 	
 	
@@ -34,7 +31,7 @@ public class StaffManagement
 	
 	static Random rand = new Random();
 	
-	public StaffManagement() 
+	public EmployeeManagement() 
 	{
 		// TODO Auto-generated constructor stub
 	}
@@ -81,8 +78,8 @@ public class StaffManagement
 	
 	public static void printEmployees(ArrayList<Employee> employees) 
 	{
-		PropertyConfigurator.configure(StaffManagement.class.getResourceAsStream("StaffManagelog4j.properties")	);
-		Logger log = Logger.getLogger(StaffManagement.class);
+		PropertyConfigurator.configure(EmployeeManagement.class.getResourceAsStream("StaffManagelog4j.properties")	);
+		Logger log = Logger.getLogger(EmployeeManagement.class);
 		
 		
 		Collections.sort(employees);
@@ -92,48 +89,6 @@ public class StaffManagement
 		}
 		
 	}
-
-	
-	public static ArrayList<Management> createManagement()
-	{
-		ArrayList<Management> managers = new ArrayList<>();
-		// String[] names = RANDOM_NAMES.split("\\s");
-		for(int loop = 0; loop < 100; loop++)
-		{
-			Management mngr = new Management();
-			mngr.setId(Integer.toString(loop));
-			mngr.setFirstName(getRandomFirstName());
-			mngr.setLastName(getRandomLastName());
-			mngr.setSex(getRandomGender());
-			managers.add(mngr);
-		}
-		return managers;
-	}
-	
-	public static void printManagements(ArrayList<Management> managers)
-	{
-		PropertyConfigurator.configure(StaffManagement.class.getResourceAsStream("StaffManagelog4j.properties")	);
-		Logger log = Logger.getLogger(StaffManagement.class);
-		
-		Comparator<Management> mngsCompare = new Comparator<Management>()
-				{
-					public int compare(Management m1, Management m2)
-					{
-						int result = m1.getLastName().compareTo(m2.getLastName());
-						if(result == 0)
-						{
-							 m1.getFirstName().compareTo(m2.getFirstName());
-						}
-						return result;
-					}
-				};
-		Collections.sort(managers, mngsCompare);
-		for (Management manager : managers)
-		{
-			log.info(manager);
-		}
-	}
-	
 	
 	public static ArrayList<Employee> searchFirstName(ArrayList<Employee> employees, String firstName)
 	{
@@ -147,23 +102,7 @@ public class StaffManagement
 		}
 		return findEmp;
 	}
-	
-	public static ArrayList<Management> searchFirstNameRegex(ArrayList<Management> managers, String regex)
-	{
-		PropertyConfigurator.configure(StaffManagement.class.getResourceAsStream("StaffManagelog4j.properties")	);
-		Logger log = Logger.getLogger(StaffManagement.class);
-		
-		ArrayList<Management> findMngr = new ArrayList<>();
-		for(Management manager : managers)
-		{
-			if(manager.getFirstName().equals(regex))
-			{
-				log.info( manager);
-			}
-		}
-		return findMngr;
-	}
-	
+
 	
 
 } // end class

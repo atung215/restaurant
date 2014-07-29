@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import ca.bcit.comp2613.restaurant.model.Employee;
-import ca.bcit.comp2613.restaurant.util.StaffManagement;
+import ca.bcit.comp2613.restaurant.util.EmployeeManagement;
 
 public class Report
 {
@@ -22,7 +22,7 @@ public class Report
 		try
 		{
 			log.info("Writing to text file....");
-			ArrayList<Employee> employee = StaffManagement.createEmployee();
+			ArrayList<Employee> employee = EmployeeManagement.createEmployee();
 			Collections.sort(employee);
 			FileUtils.writeLines(new File("employee.txt"), employee );
 			log.info(FileUtils.readFileToString(new File("employee.txt") ));

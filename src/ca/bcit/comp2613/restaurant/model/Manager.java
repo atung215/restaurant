@@ -1,18 +1,18 @@
 package ca.bcit.comp2613.restaurant.model;
 
-public class Management 
+public class Manager 
 {
 	private String firstName;
 	private String lastName;
 	private String id;
 	private Gender sex;
 	
-	public Management()
+	public Manager()
 	{
 		
 	}
 	
-	public Management(String id, String firstName, String lastName, Gender sex) 
+	public Manager(String id, String firstName, String lastName, Gender sex) 
 	{
 		// TODO Auto-generated constructor stub
 		this.firstName = firstName;
