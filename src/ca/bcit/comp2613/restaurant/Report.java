@@ -3,6 +3,7 @@ package ca.bcit.comp2613.restaurant;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -22,13 +23,13 @@ public class Report
 		{
 			log.info("Writing to text file....");
 			ArrayList<Employee> employee = StaffManagement.createEmployee();
+			Collections.sort(employee);
 			FileUtils.writeLines(new File("employee.txt"), employee );
 			log.info(FileUtils.readFileToString(new File("employee.txt") ));
 		}
 		catch(IOException ex)
 		{
-			ex.printStackTrace();
-			
+			ex.printStackTrace();			
 		}
 		
 	}
