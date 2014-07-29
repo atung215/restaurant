@@ -3,6 +3,8 @@ package ca.bcit.comp2613.restaurant.util;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 import org.apache.log4j.Logger;
@@ -115,4 +117,38 @@ public class ManagerManagement
 		}
 		return findMngr;
 	}
+	
+	public static void save(List<Manager> managers, Manager manager)
+	{
+		boolean foundUpdate = false;
+		for (Manager allManager : managers) {
+			if (allManager.getId().equals(manager.getId())) {
+				allManager.setFirstName(manager.getFirstName());
+				allManager.setLastName(manager.getLastName());
+				foundUpdate = true;
+				break;
+			}
+		}
+		if (!foundUpdate) { // do an insert
+			managers.add(manager);
+		}
+	}
+	
+	public static void delete(List<Manager> managers, Manager manager) 
+	{
+		Iterator<Manager> iter = managers.iterator();
+		while (iter.hasNext()) 
+		{
+			Manager allManagers = iter.next();
+			if (allManagers.getId().equals(manager.getId()))
+			{
+				iter.remove();
+				break;
+			}
+		}
+	}
+	
+	
+	
+	
 }
