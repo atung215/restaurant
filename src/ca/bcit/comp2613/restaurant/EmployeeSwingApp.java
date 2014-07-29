@@ -16,57 +16,26 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-
 import ca.bcit.comp2613.restaurant.model.Employee;
-import ca.bcit.comp2613.restaurant.model.Manager;
-import ca.bcit.comp2613.restaurant.util.ManagerManagement;
+import ca.bcit.comp2613.restaurant.util.EmployeeManagement;
 
-@EnableAutoConfiguration
-public class ManagerSwingApp 
-{
+public class EmployeeSwingApp extends JFrame {
 
-	private JFrame frame;
+
 	private JTable table;
 	private JTextField firstNameTextField;
 	private JTextField lastNameTextField;
 	private JLabel lblLastName;
 	private JLabel lblId;
-	private NonEditableDefaultTableModel nonEditableDefaultTableModel;
+	private NonEditableDefaultTableModel employeeModel;
 	public String[] columnNames = new String[] { "id", "First Name",
-			"Last Name"};
+			"Last Name" };
 	private JTextField idTextField;
-	public static List<Manager> managers;
-	public static List<Employee> employees;
+	private JButton btnClose;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args)
-	{
-		EventQueue.invokeLater(new Runnable() 
-		{
-			public void run() 
-			{
-				try 
-				{
-					ManagerSwingApp window = new ManagerSwingApp();
-					window.frame.setVisible(true);
-				}
-				catch (Exception e) 
-				{
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
-	/**
-	 * Create the application.
-	 */
-	public ManagerSwingApp() 
+	public EmployeeSwingApp() 
 	{
-		managers = ManagerManagement.createManager();
 		initialize();
 		initTable();
 	}
@@ -74,17 +43,14 @@ public class ManagerSwingApp
 	private void initTable() 
 	{
 
-		// table = new JTable(swingTeacherModel);
+		// table = new JTable(swingStudentModel);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getSelectionModel().addListSelectionListener(
-				new ListSelectionListener() 
-				{
+				new ListSelectionListener() {
 
 					@Override
-					public void valueChanged(ListSelectionEvent e) 
-					{
-						if (e.getValueIsAdjusting())
-						{
+					public void valueChanged(ListSelectionEvent e) {
+						if (e.getValueIsAdjusting()) {
 							populateFields();
 						}
 					}
@@ -93,10 +59,8 @@ public class ManagerSwingApp
 
 	}
 
-	private void populateFields() 
-	{
-		try
-		{
+	private void populateFields() {
+		try {
 			idTextField.setText(table.getModel()
 					.getValueAt(table.getSelectedRow(), 0).toString());
 			firstNameTextField.setText(table.getModel()
@@ -106,22 +70,20 @@ public class ManagerSwingApp
 		} catch (Exception e) {}
 	}
 
-	public void doSave() 
-	{
+	public void doSave() {
 		String id = idTextField.getText();
 		String firstName = firstNameTextField.getText();
 		String lastName = lastNameTextField.getText();
-		Manager manager = new Manager(id, firstName, lastName, null);
-		ManagerManagement.save(managers, manager);
+		Employee employee = new Employee(id, firstName, lastName, null);
+		EmployeeManagement.save(ManagerSwingApp.employees, employee);
 		//table.clearSelection();
 		refreshTable();
 	}
 	
-	public void doDelete()
-	{
+	public void doDelete() {
 		String id = idTextField.getText();
-		Manager manager = new Manager(id, null, null, null);
-		ManagerManagement.delete(managers, manager);
+		Employee employee = new Employee(id, null, null, null);
+		EmployeeManagement.delete(ManagerSwingApp.employees, employee);
 		refreshTable();
 	}
 	
@@ -133,68 +95,66 @@ public class ManagerSwingApp
 		lastNameTextField.setText("");
 	}
 
-	private void refreshTable() 
-	{
-		// swingTeacherModel = new SwingTeacherModel();
+	private void refreshTable() {
+		// swingStudentModel = new SwingStudentModel();
 		Object[][] data = null;
 
-		data = new Object[managers.size()][3];
+		data = new Object[ManagerSwingApp.employees.size()][3];
 		int i = 0;
-		for (Manager manager : managers) {
-			data[i][0] = manager.getId();
-			data[i][1] = manager.getFirstName();
-			data[i][2] = manager.getLastName();
+		for (Employee employee : ManagerSwingApp.employees) {
+			data[i][0] = employee.getId();
+			data[i][1] = employee.getFirstName();
+			data[i][2] = employee.getLastName();
 			i++;
 		}
-		nonEditableDefaultTableModel.setDataVector(data, columnNames);
+		employeeModel.setDataVector(data, columnNames);
 		table.repaint();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize()
-	{
-		frame = new JFrame();
-		frame.setBounds(100, 100, 601, 499);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+	private void initialize() {
+		
+		this.setBounds(100, 100, 601, 499);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.getContentPane().setLayout(null);
 
 		// table = new JTable();
-		nonEditableDefaultTableModel = new NonEditableDefaultTableModel();
+		employeeModel = new NonEditableDefaultTableModel();
 
-		table = new JTable(nonEditableDefaultTableModel);
+		table = new JTable(employeeModel);
 
 		// table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		// table.setBounds(0, 11, 585, 247);
 		table.setFillsViewportHeight(true);
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(0, 11, 585, 247);
-		frame.getContentPane().add(scrollPane);
+		this.getContentPane().add(scrollPane);
 		// scrollPane.add(table);
 		// frame.getContentPane().add(table);
 
 		JLabel lblFirstName = new JLabel("First Name");
 		lblFirstName.setBounds(44, 330, 103, 14);
-		frame.getContentPane().add(lblFirstName);
+		this.getContentPane().add(lblFirstName);
 
 		firstNameTextField = new JTextField();
 		firstNameTextField.setBounds(159, 327, 325, 20);
-		frame.getContentPane().add(firstNameTextField);
+		this.getContentPane().add(firstNameTextField);
 		firstNameTextField.setColumns(10);
 
 		lastNameTextField = new JTextField();
 		lastNameTextField.setBounds(159, 371, 325, 20);
-		frame.getContentPane().add(lastNameTextField);
+		this.getContentPane().add(lastNameTextField);
 		lastNameTextField.setColumns(10);
 
 		lblLastName = new JLabel("Last Name");
 		lblLastName.setBounds(44, 374, 77, 14);
-		frame.getContentPane().add(lblLastName);
+		this.getContentPane().add(lblLastName);
 
 		lblId = new JLabel("id");
 		lblId.setBounds(44, 288, 46, 14);
-		frame.getContentPane().add(lblId);
+		this.getContentPane().add(lblId);
 
 		JButton btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
@@ -203,7 +163,7 @@ public class ManagerSwingApp
 			}
 		});
 		btnSave.setBounds(44, 412, 89, 23);
-		frame.getContentPane().add(btnSave);
+		this.getContentPane().add(btnSave);
 
 		JButton btnDelete = new JButton("Delete");
 		btnDelete.addActionListener(new ActionListener() {
@@ -212,7 +172,7 @@ public class ManagerSwingApp
 			}
 		});
 		btnDelete.setBounds(169, 412, 89, 23);
-		frame.getContentPane().add(btnDelete);
+		this.getContentPane().add(btnDelete);
 
 		JButton btnNewButton = new JButton("New");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -221,12 +181,21 @@ public class ManagerSwingApp
 			}
 		});
 		btnNewButton.setBounds(496, 260, 89, 23);
-		frame.getContentPane().add(btnNewButton);
+		this.getContentPane().add(btnNewButton);
 
 		idTextField = new JTextField();
 		idTextField.setEditable(false);
 		idTextField.setBounds(159, 285, 325, 20);
-		frame.getContentPane().add(idTextField);
+		this.getContentPane().add(idTextField);
 		idTextField.setColumns(10);
+		
+		btnClose = new JButton("Close");
+		btnClose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EmployeeSwingApp.this.dispose();
+			}
+		});
+		btnClose.setBounds(496, 438, 89, 23);
+		getContentPane().add(btnClose);
 	}
 }

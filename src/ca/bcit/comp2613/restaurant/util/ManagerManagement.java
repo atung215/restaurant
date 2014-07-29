@@ -15,14 +15,7 @@ import ca.bcit.comp2613.restaurant.model.Manager;
 
 public class ManagerManagement 
 {
-	public static String NAME_STRING = "This is a string instance that creates random words"
-			+ " to use for names it will be splitted with a method to insert the field in the name property"
-			+ " it will be capitalized after it is insert into the property to have clearer view"
-			+ " this is java application assignment two it is one of the course in bcit"
-			+ " the string should create about one hundred instance of each class"
-			+ " there are two class in this assignment one of them is employee and the other"
-			+ " one is called management there will be some method created but not used"
-			+ " the assignment have one method call toString method";
+	public static String LASTNAME = "MANAGER SUPERVISOR SHIFTSUPERVISOR COMANAGER TEAMLEADER";
 	
 	// used for random names
 	public static String RANDOM_NAMES = "JORDAN EMMA MATTHEW ANDY KEVIN SCOTT DANIEL PAMELA DANA"
@@ -55,7 +48,7 @@ public class ManagerManagement
 	public static String getRandomLastName()
 	{
 		String randLastName = null;
-		String[] last = RANDOM_NAMES.split("\\s");
+		String[] last = LASTNAME.split("\\s");
 		randLastName = last[rand.nextInt(last.length)];
 		return randLastName;		
 	}

@@ -2,6 +2,8 @@ package ca.bcit.comp2613.restaurant.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 import org.apache.log4j.Logger;
@@ -15,14 +17,7 @@ public class EmployeeManagement
 {
 	
 	
-	public static String NAME_STRING = "This is a string instance that creates random words"
-			+ " to use for names it will be splitted with a method to insert the field in the name property"
-			+ " it will be capitalized after it is insert into the property to have clearer view"
-			+ " this is java application assignment two it is one of the course in bcit"
-			+ " the string should create about one hundred instance of each class"
-			+ " there are two class in this assignment one of them is employee and the other"
-			+ " one is called management there will be some method created but not used"
-			+ " the assignment have one method call toString method";
+	public static String LASTNAME = "EMPLOYEE CASHIER PRODUCTION FRONTCOUNTR";
 	
 	// used for random names
 	public static String RANDOM_NAMES = "JORDAN EMMA MATTHEW ANDY KEVIN SCOTT DANIEL PAMELA DANA"
@@ -55,7 +50,7 @@ public class EmployeeManagement
 	public static String getRandomLastName()
 	{
 		String randLastName = null;
-		String[] last = RANDOM_NAMES.split("\\s");
+		String[] last = LASTNAME.split("\\s");
 		randLastName = last[rand.nextInt(last.length)];
 		return randLastName;		
 	}
@@ -101,6 +96,40 @@ public class EmployeeManagement
 			}
 		}
 		return findEmp;
+	}
+
+	public static void save(List<Employee> employees, Employee employee) 
+	{
+		boolean foundUpdate = false;
+		for (Employee allEmployee :employees)
+		{
+			if (allEmployee.getId().equals(employee.getId()))
+			{
+				allEmployee.setFirstName(employee.getFirstName());
+				allEmployee.setLastName(employee.getLastName());
+				foundUpdate = true;
+				break;
+			}
+		}
+		if (!foundUpdate) { // do an insert
+			employees.add(employee);
+		}
+		
+	}
+
+	public static void delete(List<Employee> employees, Employee employee) 
+	{
+		Iterator<Employee> iter = employees.iterator();
+		while (iter.hasNext()) 
+		{
+			Employee allEmployee = iter.next();
+			if (allEmployee.getId().equals(employee.getId()))
+			{
+				iter.remove();
+				break;
+			}
+		}
+		
 	}
 
 	

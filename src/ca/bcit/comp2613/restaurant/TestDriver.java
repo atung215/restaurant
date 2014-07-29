@@ -39,7 +39,7 @@ public class TestDriver
 		ArrayList<Manager> findMngrs = ManagerManagement.searchFirstNameRegex(manager, "DANA");
 		ManagerManagement.printManager(findMngrs);
 		
-		//System.out.println(Arrays.toString(Gender.values()));
+		
 	}
 	 
 }
