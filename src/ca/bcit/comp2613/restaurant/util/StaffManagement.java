@@ -104,7 +104,6 @@ public class StaffManagement
 	{
 		Comparator<Management> mngsCompare = new Comparator<Management>()
 				{
-					@Override
 					public int compare(Management m1, Management m2)
 					{
 						int result = m1.getLastName().compareTo(m2.getLastName());
