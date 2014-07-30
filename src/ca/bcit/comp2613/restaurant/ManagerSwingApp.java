@@ -26,7 +26,6 @@ import ca.bcit.comp2613.restaurant.util.ManagerManagement;
 @EnableAutoConfiguration
 public class ManagerSwingApp 
 {
-
 	private JFrame frame;
 	private JTable table;
 	private JTextField firstNameTextField;
@@ -40,6 +39,7 @@ public class ManagerSwingApp
 	public static List<Manager> managers;
 	public static List<Employee> employees;
 	private JButton btnViewAllEmployees;
+	private JButton btnViewGroup;
 	
 	
 	/**
@@ -71,6 +71,7 @@ public class ManagerSwingApp
 	{
 		managers = ManagerManagement.createManager();
 		employees = EmployeeManagement.createEmployee();
+		EmployeeManagement.assignEmployeesToManagers(managers, employees);
 		initialize();
 		initTable();
 	}
@@ -94,7 +95,6 @@ public class ManagerSwingApp
 					}
 				});
 		refreshTable();
-
 	}
 
 	private void populateFields() 
@@ -117,7 +117,6 @@ public class ManagerSwingApp
 		String lastName = lastNameTextField.getText();
 		Manager manager = new Manager(id, firstName, lastName, null);
 		ManagerManagement.save(managers, manager);
-		//table.clearSelection();
 		refreshTable();
 	}
 	
@@ -140,8 +139,19 @@ public class ManagerSwingApp
 	public void viewAllEmployees()
 	{
 		EmployeeSwingApp employeeFrame = new EmployeeSwingApp();
-		employeeFrame.setVisible(true);
-		
+		employeeFrame.setVisible(true);		
+	}
+	
+	public void viewGroup()
+	{
+		String id = idTextField.getText();
+		Manager manager = null;
+		manager = ManagerManagement.findID(id, managers);
+		if(manager != null)
+		{
+			EmployeeGroup employeeGroup = new EmployeeGroup(manager);
+			employeeGroup.setVisible(true);
+		}
 	}
 
 	private void refreshTable() 
@@ -250,5 +260,16 @@ public class ManagerSwingApp
 		});
 		btnViewAllEmployees.setBounds(0, 260, 121, 23);
 		frame.getContentPane().add(btnViewAllEmployees);
+		
+		btnViewGroup = new JButton("View All Group");
+		btnViewGroup.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				viewGroup();
+			}
+		});
+		btnViewGroup.setBounds(300, 412, 144, 23);
+		frame.getContentPane().add(btnViewGroup);
 	}
 }

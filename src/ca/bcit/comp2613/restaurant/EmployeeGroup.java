@@ -26,8 +26,7 @@ public class EmployeeGroup extends JFrame
 	private JLabel lblLastName;
 	private JLabel lblId;
 	private NonEditableDefaultTableModel employeeModel;
-	public String[] columnNames = new String[] { "id", "First Name",
-			"Last Name" };
+	public String[] columnNames = new String[] { "id", "First Name", "Last Name" };
 	private JTextField idTextField;
 	private JButton btnClose;
 	private JTextField addTextField;
@@ -43,7 +42,8 @@ public class EmployeeGroup extends JFrame
 		initTable();
 	}
 
-	private void initTable() {
+	private void initTable() 
+	{
 
 		// table = new JTable(swingStudentModel);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -162,7 +162,7 @@ public class EmployeeGroup extends JFrame
 		lblId.setBounds(44, 288, 46, 14);
 		this.getContentPane().add(lblId);
 
-		JButton btnRemove = new JButton("Remove From Class");
+		JButton btnRemove = new JButton("Remove From Group");
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				removeFromClass();
