@@ -1,11 +1,15 @@
 package ca.bcit.comp2613.restaurant.model;
 
+import java.util.List;
+
 public class Employee implements Comparable<Employee>
 {
 	private String firstName;
 	private String lastName;
 	private String id;
 	private Gender sex;
+	
+	private List<Manager> managers;
 
 	public Employee()
 	{
@@ -65,6 +69,16 @@ public class Employee implements Comparable<Employee>
 	public void setSex(Gender sex) 
 	{
 		this.sex = sex;
+	}
+	
+	public List<Manager> getManagers()
+	{
+		return managers;		
+	}
+	
+	public void setManagers(List<Manager> managers)
+	{
+		this.managers = managers;		
 	}
 
 	@Override

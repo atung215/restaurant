@@ -15,8 +15,7 @@ import ca.bcit.comp2613.restaurant.model.Gender;
 
 public class EmployeeManagement
 {
-	
-	
+		
 	public static String LASTNAMES = "EMPLOYEE CASHIER PRODUCTION FRONTCOUNTR";
 	
 	// used for random names
@@ -28,7 +27,6 @@ public class EmployeeManagement
 	
 	public EmployeeManagement() 
 	{
-		// TODO Auto-generated constructor stub
 	}
 	
 	public static Gender getRandomGender()
@@ -60,7 +58,7 @@ public class EmployeeManagement
 	{
 		ArrayList<Employee> Emps = new ArrayList<Employee>();
 		
-		for(int loop = 1; loop < 101; loop++)
+		for(int loop = 0; loop < 100; loop++)
 		{
 			String firstName = getRandomFirstName();
 			String lastName = getRandomLastName();
@@ -81,8 +79,7 @@ public class EmployeeManagement
 		for (Employee employee : employees)
 		{
 			log.info( employee);
-		}
-		
+		}		
 	}
 	
 	public static ArrayList<Employee> searchFirstName(ArrayList<Employee> employees, String firstName)
@@ -113,8 +110,7 @@ public class EmployeeManagement
 		}
 		if (!foundUpdate) { // do an insert
 			employees.add(employee);
-		}
-		
+		}		
 	}
 
 	public static void delete(List<Employee> employees, Employee employee) 
@@ -128,8 +124,19 @@ public class EmployeeManagement
 				iter.remove();
 				break;
 			}
+		}		
+	}
+
+	public static Employee findID(String id, List<Employee> employees) 
+	{
+		for(Employee allEmployees : employees)
+		{
+			if(allEmployees.getId().equals(id))
+			{
+				return allEmployees;
+			}
 		}
-		
+		return null;
 	}
 
 	

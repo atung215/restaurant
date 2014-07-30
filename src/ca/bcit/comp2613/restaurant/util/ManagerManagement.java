@@ -10,6 +10,7 @@ import java.util.Random;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import ca.bcit.comp2613.restaurant.model.Employee;
 import ca.bcit.comp2613.restaurant.model.Gender;
 import ca.bcit.comp2613.restaurant.model.Manager;
 
@@ -141,6 +142,52 @@ public class ManagerManagement
 		}
 	}
 	
+	public static Manager findID(String id, List<Manager> managers)
+	{
+		for(Manager allManagers : managers)
+		{
+			if(allManagers.getId().equals(id))
+			{
+				return allManagers;
+			}
+		}
+		return null;
+	}
+	
+	public static void addToGroup(Manager manager, Employee employee, List<Employee> employees)
+	{
+		if(manager.getEmployees() == null)
+		{
+			manager.setEmployees(new ArrayList<Employee>());
+		}
+		for(Employee allEmployee : manager.getEmployees())
+		{
+			if(allEmployee.getId().equals(allEmployee.getId()))
+			{
+				return;				
+			}			
+		}
+		
+		employee = EmployeeManagement.findID(employee.getId(), employees);
+		manager.getEmployees().add(employee);		
+	}
+	
+	public static void removeFromGroup(Manager manager, Employee employee)
+	{
+		if(manager.getEmployees() != null)
+		{
+			Iterator<Employee> iter = manager.getEmployees().iterator();
+			while(iter.hasNext())
+			{
+				Employee allEmployee = iter.next();
+				if(allEmployee.getId().equals(employee.getId()))
+				{
+					iter.remove();
+					break;
+				}				
+			}
+		}
+	}
 	
 	
 	

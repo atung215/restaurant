@@ -1,11 +1,15 @@
 package ca.bcit.comp2613.restaurant.model;
 
+import java.util.List;
+
 public class Manager 
 {
 	private String firstName;
 	private String lastName;
 	private String id;
 	private Gender sex;
+	
+	private List<Employee> employees;
 	
 	public Manager()
 	{
@@ -64,6 +68,16 @@ public class Manager
 
 		public void setSex(Gender sex) {
 			this.sex = sex;
+		}
+
+		public List<Employee> getEmployees() 
+		{
+			return employees;
+		}
+
+		public void setEmployees(List<Employee> employees)
+		{
+			this.employees = employees;
 		}
 
 		@Override
