@@ -54,6 +54,12 @@ public class EmployeeManagement
 		return randLastName;		
 	}
 	
+	public static double getRandomHrRate()
+	{
+		double hourlyRate;
+		hourlyRate = 10 + rand.nextInt(6);
+		return hourlyRate;
+	}
 	
 	public static ArrayList<Employee> createEmployee()
 	{
@@ -64,7 +70,8 @@ public class EmployeeManagement
 			String firstName = getRandomFirstName();
 			String lastName = getRandomLastName();
 			Gender gender = getRandomGender();
-			Employee employee = new Employee(Integer.toString(loop), firstName, lastName, gender);
+			double hourlyRate = getRandomHrRate();
+			Employee employee = new Employee(Integer.toString(loop), firstName, lastName, gender, hourlyRate);
 			Emps.add(employee);
 		}
 		return Emps;		
@@ -105,6 +112,7 @@ public class EmployeeManagement
 			{
 				allEmployee.setFirstName(employee.getFirstName());
 				allEmployee.setLastName(employee.getLastName());
+				allEmployee.setHourlyRate(getRandomHrRate());
 				foundUpdate = true;
 				break;
 			}

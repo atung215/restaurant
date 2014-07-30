@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,12 +30,13 @@ public class EmployeeGroup extends JFrame {
 	private JLabel lblId;
 	private NonEditableDefaultTableModel swingStudentModel;
 	public String[] columnNames = new String[] { "id", "First Name",
-			"Last Name" };
+			"Last Name", "Hourly Rate" };
 	private JTextField idTextField;
 	private Manager manager;
 	private JButton btnClose;
 	private JTextField addTextField;
 	private JLabel lblStudentId;
+	private JLabel lblhourlyRate;
 
 	public EmployeeGroup(Manager manager) 
 	{
@@ -61,8 +63,10 @@ public class EmployeeGroup extends JFrame {
 
 	}
 
-	private void populateFields() {
-		try {
+	private void populateFields()
+	{
+		try 
+		{
 			idTextField.setText(table.getModel()
 					.getValueAt(table.getSelectedRow(), 0).toString());
 			firstNameTextField.setText(table.getModel()
@@ -85,8 +89,6 @@ public class EmployeeGroup extends JFrame {
 	public void doAdd() {
 		try {
 			String id = addTextField.getText();
-			//Student student = new Student(id, null, null);
-			//TeacherUtil.addToClass (teacher, student, TeacherSwingApplication.students);
 			ManagerSwingApp.customQueryHelper.addEmployeesToManager(manager.getId(), Long.parseLong(id));
 		} catch (Exception e) {}
 		refreshTable();
@@ -98,12 +100,14 @@ public class EmployeeGroup extends JFrame {
 		Object[][] data = null;
 		List<Employee> employees = ManagerSwingApp.customQueryHelper.getEmployeesOfManager(manager.getId());
 		if (employees != null) {
-			data = new Object[employees.size()][3];
+			data = new Object[employees.size()][4];
 			int i = 0;
-			for (Employee employee : employees) {
+			for (Employee employee : employees) 
+			{
 				data[i][0] = employee.getId();
 				data[i][1] = employee.getFirstName();
 				data[i][2] = employee.getLastName();
+				data[i][3] = employee.getHourlyRate();
 				i++;
 			}
 			swingStudentModel.setDataVector(data, columnNames);
@@ -157,6 +161,10 @@ public class EmployeeGroup extends JFrame {
 		lblId = new JLabel("id");
 		lblId.setBounds(44, 288, 46, 14);
 		this.getContentPane().add(lblId);
+		
+		lblhourlyRate = new JLabel("Hourly Rate");
+		lblhourlyRate.setBounds(44, 400, 46, 14);
+		this.getContentPane().add(lblhourlyRate);
 
 		JButton btnRemove = new JButton("Remove From Group");
 		btnRemove.addActionListener(new ActionListener() {

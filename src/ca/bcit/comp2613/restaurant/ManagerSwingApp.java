@@ -55,15 +55,12 @@ public class ManagerSwingApp
 	private JLabel lblLastName;
 	private JLabel lblId;
 	private NonEditableDefaultTableModel nonEditableDefaultTableModel;
-	public String[] columnNames = new String[] { "id", "First Name",
-			"Last Name"};
+	public String[] columnNames = new String[] { "id", "First Name", "Last Name", "Hourly Rate", "Bonus"};
 	private JTextField idTextField;
 	public static List<Manager> managers;
 	public static List<Employee> employees;
 	private JButton btnViewAllEmployees;
 	private JButton btnViewGroup;
-	private JLabel lblGender;
-	//private JComboBox<Gender> genderComboBox;
 	public static ManagerRepository managerRepository;
 	public static EmployeeRepository employeeRepository;
 	public static CustomQueryHelper customQueryHelper;
@@ -171,14 +168,15 @@ public class ManagerSwingApp
 		}
 	}
 
-	public void doSave() {
+	public void doSave() 
+	{
 		String id = idTextField.getText();
 		String firstName = firstNameTextField.getText();
 		String lastName = lastNameTextField.getText();
-		//Gender gender = (Gender) genderComboBox.getSelectedItem();
-		Manager manager = new Manager(id, firstName, lastName, null);
+		double hourlyRate = ManagerManagement.getRandomHourlyRate(); 
+		int bonus = ManagerManagement.getRandomBonus();
+		Manager manager = new Manager(id, firstName, lastName, null, hourlyRate, bonus);
 		managerRepository.save(manager);
-		// table.clearSelection();
 		refreshTable();
 	}
 
@@ -219,13 +217,14 @@ public class ManagerSwingApp
 	{
 		Object[][] data = null;
 		managers = copyIterator(managerRepository.findAll().iterator());
-		data = new Object[managers.size()][4];
+		data = new Object[managers.size()][5];
 		int i = 0;
 		for (Manager manager : managers) {
 			data[i][0] = manager.getId();
 			data[i][1] = manager.getFirstName();
 			data[i][2] = manager.getLastName();
-			//data[i][3] = manager.getGender();
+			data[i][3] = manager.getHourlyRate();
+			data[i][4] = manager.getBonus();			
 			i++;
 		}
 		nonEditableDefaultTableModel.setDataVector(data, columnNames);
@@ -327,11 +326,6 @@ public class ManagerSwingApp
 		});
 		btnViewGroup.setBounds(293, 497, 144, 23);
 		frame.getContentPane().add(btnViewGroup);
-
-		lblGender = new JLabel("Gender");
-		lblGender.setBounds(44, 416, 77, 14);
-		frame.getContentPane().add(lblGender);
-
 
 	}
 	

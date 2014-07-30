@@ -17,6 +17,8 @@ public class Manager
 	private String firstName;
 	private String lastName;	
 	private Gender sex;
+	private double hourlyRate;
+	private int bonus;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	
@@ -31,13 +33,15 @@ public class Manager
 		
 	}
 	
-	public Manager(String id, String firstName, String lastName, Gender sex) 
+	public Manager(String id, String firstName, String lastName, Gender sex, double hourlyRate, int bonus) 
 	{
 		// TODO Auto-generated constructor stub
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;		
 		this.sex = sex;
+		this.hourlyRate = hourlyRate;
+		this.bonus = bonus;
 	}
 	
 	// get set first Name
@@ -83,6 +87,22 @@ public class Manager
 
 		public void setSex(Gender sex) {
 			this.sex = sex;
+		}
+
+		public double getHourlyRate() {
+			return hourlyRate;
+		}
+
+		public void setHourlyRate(double hourlyRate) {
+			this.hourlyRate = hourlyRate;
+		}
+
+		public int getBonus() {
+			return bonus;
+		}
+
+		public void setBonus(int bonus) {
+			this.bonus = bonus;
 		}
 
 		public List<Employee> getEmployees() 

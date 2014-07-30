@@ -20,6 +20,7 @@ public class Employee implements Comparable<Employee>
 	private String firstName;
 	private String lastName;	
 	private Gender sex;
+	private double hourlyRate;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	
@@ -34,22 +35,24 @@ public class Employee implements Comparable<Employee>
 		
 	}
 		
-	public Employee( Long id, String firstName, String lastName, Gender sex) 
+	public Employee( Long id, String firstName, String lastName, Gender sex, double hourlyRate) 
 	{
 		// TODO Auto-generated constructor stub
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;		
 		this.sex = sex;
+		this.hourlyRate = hourlyRate;
 	}
 	
-	public Employee( String id, String firstName, String lastName, Gender sex) 
+	public Employee( String id, String firstName, String lastName, Gender sex, double hourlyRate) 
 	{
 		// TODO Auto-generated constructor stub
 		this.id = Long.parseLong(id);
 		this.firstName = firstName;
 		this.lastName = lastName;		
 		this.sex = sex;
+		this.hourlyRate = hourlyRate;
 	}
 
 	// get set first Name
@@ -93,6 +96,16 @@ public class Employee implements Comparable<Employee>
 		this.sex = sex;
 	}
 	
+	public double getHourlyRate()
+	{
+		return hourlyRate;
+	}
+
+	public void setHourlyRate(double hourlyRate)
+	{
+		this.hourlyRate = hourlyRate;
+	}
+
 	public List<Manager> getManagers()
 	{
 		return managers;		

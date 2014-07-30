@@ -54,7 +54,19 @@ public class ManagerManagement
 		return randLastName;		
 	}
 	
+	public static double getRandomHourlyRate()
+	{
+		double hourlyRate;
+		hourlyRate = 15 + rand.nextInt(7);	
+		return hourlyRate;
+	}
 
+	public static int getRandomBonus()
+	{
+		int bonus;
+		bonus = 200 + rand.nextInt(200);
+		return bonus;		
+	}
 	
 	public static ArrayList<Manager> createManager()
 	{
@@ -67,6 +79,8 @@ public class ManagerManagement
 			mngr.setFirstName(getRandomFirstName());
 			mngr.setLastName(getRandomLastName());
 			mngr.setSex(getRandomGender());
+			mngr.setHourlyRate(getRandomHourlyRate());
+			mngr.setBonus(getRandomBonus());
 			managers.add(mngr);
 		}
 		return managers;
@@ -119,6 +133,8 @@ public class ManagerManagement
 			if (allManager.getId().equals(manager.getId())) {
 				allManager.setFirstName(manager.getFirstName());
 				allManager.setLastName(manager.getLastName());
+				allManager.setHourlyRate(getRandomHourlyRate());
+				allManager.setBonus(getRandomBonus());
 				foundUpdate = true;
 				break;
 			}

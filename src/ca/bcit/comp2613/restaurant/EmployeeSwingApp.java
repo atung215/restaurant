@@ -29,8 +29,7 @@ public class EmployeeSwingApp extends JFrame {
 	private JLabel lblLastName;
 	private JLabel lblId;
 	private NonEditableDefaultTableModel employeeModel;
-	public String[] columnNames = new String[] { "id", "First Name",
-			"Last Name" };
+	public String[] columnNames = new String[] { "id", "First Name", "Last Name", "Hourly Rate"};
 	private JTextField idTextField;
 	private JButton btnClose;
 
@@ -75,14 +74,15 @@ public class EmployeeSwingApp extends JFrame {
 		String id = idTextField.getText();
 		String firstName = firstNameTextField.getText();
 		String lastName = lastNameTextField.getText();
+		double hourlyRate = EmployeeManagement.getRandomHrRate();
 		Employee employee = null;
 		if(id.equals(""))
 		{
-			employee = new Employee((Long)null, firstName, lastName, null);
+			employee = new Employee((Long)null, firstName, lastName, null, hourlyRate);
 		}
 		else
 		{
-			employee = new Employee(id, firstName, lastName, null);
+			employee = new Employee(id, firstName, lastName, null, hourlyRate);
 		}
 		ManagerSwingApp.employeeRepository.save(employee);
 		refreshTable();
@@ -105,12 +105,13 @@ public class EmployeeSwingApp extends JFrame {
 		// swingStudentModel = new SwingStudentModel();
 		Object[][] data = null;
 		ManagerSwingApp.employees = ManagerSwingApp.copyIterator(ManagerSwingApp.employeeRepository.findAll().iterator());
-		data = new Object[ManagerSwingApp.employees.size()][3];
+		data = new Object[ManagerSwingApp.employees.size()][4];
 		int i = 0;
 		for (Employee employee : ManagerSwingApp.employees) {
 			data[i][0] = employee.getId();
 			data[i][1] = employee.getFirstName();
 			data[i][2] = employee.getLastName();
+			data[i][3] = employee.getHourlyRate();
 			i++;
 		}
 		employeeModel.setDataVector(data, columnNames);
