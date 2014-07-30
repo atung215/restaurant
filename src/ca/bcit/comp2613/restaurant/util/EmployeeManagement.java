@@ -17,7 +17,7 @@ public class EmployeeManagement
 {
 	
 	
-	public static String LASTNAME = "EMPLOYEE CASHIER PRODUCTION FRONTCOUNTR";
+	public static String LASTNAMES = "EMPLOYEE CASHIER PRODUCTION FRONTCOUNTR";
 	
 	// used for random names
 	public static String RANDOM_NAMES = "JORDAN EMMA MATTHEW ANDY KEVIN SCOTT DANIEL PAMELA DANA"
@@ -50,7 +50,7 @@ public class EmployeeManagement
 	public static String getRandomLastName()
 	{
 		String randLastName = null;
-		String[] last = LASTNAME.split("\\s");
+		String[] last = LASTNAMES.split("\\s");
 		randLastName = last[rand.nextInt(last.length)];
 		return randLastName;		
 	}

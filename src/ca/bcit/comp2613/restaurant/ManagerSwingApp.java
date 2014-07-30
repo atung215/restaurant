@@ -20,6 +20,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import ca.bcit.comp2613.restaurant.model.Employee;
 import ca.bcit.comp2613.restaurant.model.Manager;
+import ca.bcit.comp2613.restaurant.util.EmployeeManagement;
 import ca.bcit.comp2613.restaurant.util.ManagerManagement;
 
 @EnableAutoConfiguration
@@ -38,7 +39,9 @@ public class ManagerSwingApp
 	private JTextField idTextField;
 	public static List<Manager> managers;
 	public static List<Employee> employees;
-
+	private JButton btnViewAllEmployees;
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -67,6 +70,7 @@ public class ManagerSwingApp
 	public ManagerSwingApp() 
 	{
 		managers = ManagerManagement.createManager();
+		employees = EmployeeManagement.createEmployee();
 		initialize();
 		initTable();
 	}
@@ -131,6 +135,13 @@ public class ManagerSwingApp
 		idTextField.setText(id);
 		firstNameTextField.setText("");
 		lastNameTextField.setText("");
+	}
+	
+	public void viewAllEmployees()
+	{
+		EmployeeSwingApp employeeFrame = new EmployeeSwingApp();
+		employeeFrame.setVisible(true);
+		
 	}
 
 	private void refreshTable() 
@@ -228,5 +239,16 @@ public class ManagerSwingApp
 		idTextField.setBounds(159, 285, 325, 20);
 		frame.getContentPane().add(idTextField);
 		idTextField.setColumns(10);
+		
+		btnViewAllEmployees = new JButton("View All Employees");
+		btnViewAllEmployees.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				viewAllEmployees();
+			}
+		});
+		btnViewAllEmployees.setBounds(0, 260, 121, 23);
+		frame.getContentPane().add(btnViewAllEmployees);
 	}
 }
