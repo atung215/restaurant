@@ -223,8 +223,8 @@ public class ManagerSwingApp
 			data[i][0] = manager.getId();
 			data[i][1] = manager.getFirstName();
 			data[i][2] = manager.getLastName();
-			data[i][3] = manager.getHourlyRate();
-			data[i][4] = manager.getBonus();			
+			data[i][3] = "$ " + manager.getHourlyRate();
+			data[i][4] = "$ " + manager.getBonus();			
 			i++;
 		}
 		nonEditableDefaultTableModel.setDataVector(data, columnNames);

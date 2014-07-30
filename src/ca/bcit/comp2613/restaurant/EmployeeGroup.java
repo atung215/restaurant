@@ -107,7 +107,7 @@ public class EmployeeGroup extends JFrame {
 				data[i][0] = employee.getId();
 				data[i][1] = employee.getFirstName();
 				data[i][2] = employee.getLastName();
-				data[i][3] = employee.getHourlyRate();
+				data[i][3] = "$ " + employee.getHourlyRate();
 				i++;
 			}
 			swingStudentModel.setDataVector(data, columnNames);
