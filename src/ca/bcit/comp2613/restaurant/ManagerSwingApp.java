@@ -60,8 +60,8 @@ public class ManagerSwingApp
 	private JTextField idTextField;
 	public static List<Manager> managers;
 	public static List<Employee> employees;
-	private JButton btnViewAllStudents;
-	private JButton btnViewClass;
+	private JButton btnViewAllEmployees;
+	private JButton btnViewGroup;
 	private JLabel lblGender;
 	//private JComboBox<Gender> genderComboBox;
 	public static ManagerRepository managerRepository;
@@ -310,23 +310,23 @@ public class ManagerSwingApp
 		frame.getContentPane().add(idTextField);
 		idTextField.setColumns(10);
 
-		btnViewAllStudents = new JButton("View all Employees");
-		btnViewAllStudents.addActionListener(new ActionListener() {
+		btnViewAllEmployees = new JButton("View all Employees");
+		btnViewAllEmployees.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				viewAllStudents();
 			}
 		});
-		btnViewAllStudents.setBounds(0, 260, 121, 23);
-		frame.getContentPane().add(btnViewAllStudents);
+		btnViewAllEmployees.setBounds(0, 260, 121, 23);
+		frame.getContentPane().add(btnViewAllEmployees);
 
-		btnViewClass = new JButton("View Group");
-		btnViewClass.addActionListener(new ActionListener() {
+		btnViewGroup = new JButton("View Group");
+		btnViewGroup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				viewClass();
 			}
 		});
-		btnViewClass.setBounds(293, 497, 144, 23);
-		frame.getContentPane().add(btnViewClass);
+		btnViewGroup.setBounds(293, 497, 144, 23);
+		frame.getContentPane().add(btnViewGroup);
 
 		lblGender = new JLabel("Gender");
 		lblGender.setBounds(44, 416, 77, 14);
