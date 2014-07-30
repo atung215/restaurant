@@ -26,6 +26,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import ca.bcit.comp2613.restaurant.model.Employee;
+import ca.bcit.comp2613.restaurant.model.Gender;
 import ca.bcit.comp2613.restaurant.model.Manager;
 import ca.bcit.comp2613.restaurant.repository.CustomQueryHelper;
 import ca.bcit.comp2613.restaurant.repository.EmployeeRepository;
@@ -46,6 +47,7 @@ public class ManagerSwingApp
 	public String[] columnNames = new String[] { "id", "First Name",
 			"Last Name"};
 	private JTextField idTextField;
+	
 	public static List<Manager> managers;
 	public static List<Employee> employees;
 	private JButton btnViewAllEmployees;
@@ -127,19 +129,17 @@ public class ManagerSwingApp
 		customQueryHelper = new CustomQueryHelper(emf);
 		managers = copyIterator(managerRepository.findAll().iterator());
 		employees = copyIterator(employeeRepository.findAll().iterator());
+		
 		initialize();
 		initTable();
 	}
 
 	private void initTable() 
 	{
-
-		// table = new JTable(swingTeacherModel);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getSelectionModel().addListSelectionListener(
 				new ListSelectionListener() 
 				{
-
 					@Override
 					public void valueChanged(ListSelectionEvent e) 
 					{
@@ -162,7 +162,12 @@ public class ManagerSwingApp
 					.getValueAt(table.getSelectedRow(), 1).toString());
 			lastNameTextField.setText(table.getModel()
 					.getValueAt(table.getSelectedRow(), 2).toString());
-		} catch (Exception e) {}
+			
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public void doSave() 
@@ -170,7 +175,8 @@ public class ManagerSwingApp
 		String id = idTextField.getText();
 		String firstName = firstNameTextField.getText();
 		String lastName = lastNameTextField.getText();
-		Manager manager = new Manager(id, firstName, lastName, null);
+		Gender gender = ManagerManagement.getRandomGender();
+		Manager manager = new Manager(id, firstName, lastName, gender);
 		managerRepository.save(manager);
 		refreshTable();
 	}

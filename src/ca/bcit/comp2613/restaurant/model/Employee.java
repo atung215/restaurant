@@ -42,8 +42,6 @@ public class Employee implements Comparable<Employee>
 		this.lastName = lastName;		
 		this.sex = sex;
 	}
-
-	
 	
 	public Employee( String id, String firstName, String lastName, Gender sex) 
 	{

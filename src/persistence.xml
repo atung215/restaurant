@@ -7,7 +7,7 @@
 	<persistence-unit name="default" transaction-type="RESOURCE_LOCAL">
 	<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-		 <class>ca.bcit.comp2613.restaurant.model.Employee</class>
 		 <class>ca.bcit.comp2613.restaurant.model.Manager</class>
+		 <class>ca.bcit.comp2613.restaurant.model.Employee</class>
 	</persistence-unit>
 </persistence>
