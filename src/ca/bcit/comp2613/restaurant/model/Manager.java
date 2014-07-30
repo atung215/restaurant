@@ -13,9 +13,9 @@ import javax.persistence.ManyToMany;
 public class Manager 
 {
 	@Id
-	private String firstName;
-	private String lastName;
 	private String id;
+	private String firstName;
+	private String lastName;	
 	private Gender sex;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
@@ -34,9 +34,9 @@ public class Manager
 	public Manager(String id, String firstName, String lastName, Gender sex) 
 	{
 		// TODO Auto-generated constructor stub
-		this.firstName = firstName;
-		this.lastName = lastName;
 		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;		
 		this.sex = sex;
 	}
 	

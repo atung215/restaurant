@@ -171,15 +171,14 @@ public class ManagerSwingApp
 		String firstName = firstNameTextField.getText();
 		String lastName = lastNameTextField.getText();
 		Manager manager = new Manager(id, firstName, lastName, null);
-		ManagerManagement.save(managers, manager);
+		managerRepository.save(manager);
 		refreshTable();
 	}
 	
 	public void doDelete()
 	{
 		String id = idTextField.getText();
-		Manager manager = new Manager(id, null, null, null);
-		ManagerManagement.delete(managers, manager);
+		managerRepository.delete(id);
 		refreshTable();
 	}
 	

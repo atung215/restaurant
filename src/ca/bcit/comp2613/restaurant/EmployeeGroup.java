@@ -2,6 +2,7 @@ package ca.bcit.comp2613.restaurant;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -78,8 +79,7 @@ public class EmployeeGroup extends JFrame
 	{
 		String id = idTextField.getText();
 		
-		Employee employee = new Employee(id, null, null, null);
-		ManagerManagement.removeFromGroup (manager, employee);
+		ManagerSwingApp.customQueryHelper.removeEmployeesFromManager(manager.getId(), Long.parseLong(id));
 		refreshTable();
 	}
 
@@ -88,8 +88,7 @@ public class EmployeeGroup extends JFrame
 		try
 		{
 			String id = addTextField.getText();
-			Employee employee = new Employee(id, null, null, null);
-			ManagerManagement.addToGroup (manager, employee, ManagerSwingApp.employees);
+			ManagerSwingApp.customQueryHelper.addEmployeesToManager(manager.getId(), Long.parseLong(id));
 		} 
 		catch (Exception e)
 		{
@@ -100,8 +99,10 @@ public class EmployeeGroup extends JFrame
 	private void refreshTable() 
 	{
 		Object[][] data = null;
-		if (manager.getEmployees() != null) {
-			data = new Object[manager.getEmployees().size()][3];
+		List<Employee> employees = ManagerSwingApp.customQueryHelper.getEmployeesOfManager(manager.getId());
+		if (employees != null)
+		{
+			data = new Object[employees.size()][3];
 			int i = 0;
 			for (Employee employee : manager.getEmployees()) 
 			{

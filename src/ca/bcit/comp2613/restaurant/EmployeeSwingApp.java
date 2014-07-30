@@ -18,6 +18,7 @@ import javax.swing.event.ListSelectionListener;
 
 import ca.bcit.comp2613.restaurant.model.Employee;
 import ca.bcit.comp2613.restaurant.util.EmployeeManagement;
+import ca.bcit.comp2613.restaurant.util.ManagerManagement;
 
 public class EmployeeSwingApp extends JFrame {
 
@@ -81,7 +82,7 @@ public class EmployeeSwingApp extends JFrame {
 		}
 		else
 		{
-			employee = new Employee(id, firstName, lastName, sex);
+			employee = new Employee(id, firstName, lastName, null);
 		}
 		ManagerSwingApp.employeeRepository.save(employee);
 		refreshTable();
@@ -89,15 +90,13 @@ public class EmployeeSwingApp extends JFrame {
 	
 	public void doDelete() {
 		String id = idTextField.getText();
-		Employee employee = new Employee(id, null, null, null);
-		EmployeeManagement.delete(ManagerSwingApp.employees, employee);
+		ManagerSwingApp.employeeRepository.delete(Long.parseLong(id));
 		refreshTable();
 	}
 	
 	public void doNew() 
 	{
-		String id = UUID.randomUUID().toString();
-		idTextField.setText(id);
+		idTextField.setText("");
 		firstNameTextField.setText("");
 		lastNameTextField.setText("");
 	}
@@ -105,7 +104,7 @@ public class EmployeeSwingApp extends JFrame {
 	private void refreshTable() {
 		// swingStudentModel = new SwingStudentModel();
 		Object[][] data = null;
-
+		ManagerSwingApp.employees = ManagerSwingApp.copyIterator(ManagerSwingApp.employeeRepository.findAll().iterator());
 		data = new Object[ManagerSwingApp.employees.size()][3];
 		int i = 0;
 		for (Employee employee : ManagerSwingApp.employees) {

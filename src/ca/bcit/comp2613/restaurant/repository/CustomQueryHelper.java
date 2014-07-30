@@ -65,7 +65,35 @@ public class CustomQueryHelper
 		return retval;
 	}
 	
-	public void addEmployeeToManager(String managerId, Long employeeId)
+	public List<Employee> getEmployeesOfManager(String managerId)
+	{
+		List<Employee> retval = null;
+		EntityManager em = null;
+		try
+		{
+			em = emf.createEntityManager();
+			Manager manager = em.find(Manager.class, managerId);
+			manager.getEmployees().size();
+			return manager.getEmployees();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try
+			{
+				em.close();
+			}
+			catch(Exception e)
+			{
+			}
+		}
+		return retval;
+	}
+	
+	public void addEmployeesToManager(String managerId, Long employeeId)
 	{
 		EntityManager em = null;
 		try {
@@ -95,7 +123,7 @@ public class CustomQueryHelper
 		}		
 	}
 	
-	public void removeEmployeeFromManager(String managerId, Long employeeId) {
+	public void removeEmployeesFromManager(String managerId, Long employeeId) {
 		EntityManager em = null;
 		try 
 		{

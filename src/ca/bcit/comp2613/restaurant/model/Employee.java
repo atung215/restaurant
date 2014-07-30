@@ -16,9 +16,9 @@ public class Employee implements Comparable<Employee>
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private String firstName;
-	private String lastName;
 	private Long id;
+	private String firstName;
+	private String lastName;	
 	private Gender sex;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
@@ -37,9 +37,9 @@ public class Employee implements Comparable<Employee>
 	public Employee( Long id, String firstName, String lastName, Gender sex) 
 	{
 		// TODO Auto-generated constructor stub
-		this.firstName = firstName;
-		this.lastName = lastName;
 		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;		
 		this.sex = sex;
 	}
 
@@ -48,9 +48,9 @@ public class Employee implements Comparable<Employee>
 	public Employee( String id, String firstName, String lastName, Gender sex) 
 	{
 		// TODO Auto-generated constructor stub
-		this.firstName = firstName;
-		this.lastName = lastName;
 		this.id = Long.parseLong(id);
+		this.firstName = firstName;
+		this.lastName = lastName;		
 		this.sex = sex;
 	}
 
