@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,22 +22,32 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.data.jpa.repository.support.JpaRepositoryFactory;
+import org.springframework.data.repository.core.support.RepositoryProxyPostProcessor;
+import org.springframework.orm.jpa.EntityManagerHolder;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource;
+import org.springframework.transaction.interceptor.TransactionInterceptor;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import ca.bcit.comp2613.restaurant.model.Employee;
-import ca.bcit.comp2613.restaurant.model.Gender;
 import ca.bcit.comp2613.restaurant.model.Manager;
 import ca.bcit.comp2613.restaurant.repository.CustomQueryHelper;
 import ca.bcit.comp2613.restaurant.repository.EmployeeRepository;
 import ca.bcit.comp2613.restaurant.repository.ManagerRepository;
-import ca.bcit.comp2613.restaurant.util.EmployeeManagement;
 import ca.bcit.comp2613.restaurant.util.ManagerManagement;
 
-@EnableAutoConfiguration
-public class ManagerSwingApp 
+import javax.swing.JComboBox;
+
+public class ManagerSwingApp
 {
+
 	private JFrame frame;
 	private JTable table;
 	private JTextField firstNameTextField;
@@ -47,45 +58,42 @@ public class ManagerSwingApp
 	public String[] columnNames = new String[] { "id", "First Name",
 			"Last Name"};
 	private JTextField idTextField;
-	
 	public static List<Manager> managers;
 	public static List<Employee> employees;
-	private JButton btnViewAllEmployees;
-	private JButton btnViewGroup;
+	private JButton btnViewAllStudents;
+	private JButton btnViewClass;
+	private JLabel lblGender;
+	//private JComboBox<Gender> genderComboBox;
 	public static ManagerRepository managerRepository;
 	public static EmployeeRepository employeeRepository;
 	public static CustomQueryHelper customQueryHelper;
-	
-	
+
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args)
+	public static void main(String[] args) 
 	{
-		EventQueue.invokeLater(new Runnable() 
+
+		EventQueue.invokeLater(new Runnable()
 		{
-			public void run() 
+			public void run()
 			{
 				try 
 				{
 					ManagerSwingApp window = new ManagerSwingApp();
 					window.frame.setVisible(true);
-				}
-				catch (Exception e) 
+				} catch (Exception e)
 				{
 					e.printStackTrace();
 				}
 			}
 		});
 	}
-	
-	public static <M> List<M> copyIterator(Iterator<M> iter)
-	{
-		List<M> copy = new ArrayList();
-		while(iter.hasNext())
-		{
+
+	public static <T> List<T> copyIterator(Iterator<T> iter) {
+		List<T> copy = new ArrayList();
+		while (iter.hasNext())
 			copy.add(iter.next());
-		}
 		return copy;
 	}
 
@@ -94,35 +102,32 @@ public class ManagerSwingApp
 	 */
 	public static boolean useInMemoryDB = true;
 	
-	public ManagerSwingApp() 
+
+	public ManagerSwingApp()
 	{
 		ConfigurableApplicationContext context = null;
-		if(useInMemoryDB)
-		{
+		if (useInMemoryDB) {
 			context = SpringApplication.run(H2Config.class);
-			try
+			try 
 			{
 				org.h2.tools.Server.createWebServer(null).start();
 				DataSource dataSource = (DataSource) context.getBean("dataSource");
-			}
-			catch(SQLException e)
+			} 
+			catch (SQLException e)
 			{
 				e.printStackTrace();
 			}
-		}
+		} 
 		else
 		{
 			context = SpringApplication.run(TestDriveSQL.class);
 		}
-		
-		for(String beanDefinitionName : context.getBeanDefinitionNames())
-		{
+
+		for (String beanDefinitionName : context.getBeanDefinitionNames()) {
 			System.out.println(beanDefinitionName);
 		}
-		
+
 		EntityManagerFactory emf = (EntityManagerFactory) context.getBean("entityManagerFactory");
-		
-		
 		
 		managerRepository = context.getBean(ManagerRepository.class);
 		employeeRepository = context.getBean(EmployeeRepository.class);
@@ -134,28 +139,26 @@ public class ManagerSwingApp
 		initTable();
 	}
 
-	private void initTable() 
-	{
+	private void initTable() {
+
+		// table = new JTable(swingTeacherModel);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getSelectionModel().addListSelectionListener(
-				new ListSelectionListener() 
-				{
+				new ListSelectionListener() {
+
 					@Override
-					public void valueChanged(ListSelectionEvent e) 
-					{
-						if (e.getValueIsAdjusting())
-						{
+					public void valueChanged(ListSelectionEvent e) {
+						if (e.getValueIsAdjusting()) {
 							populateFields();
 						}
 					}
 				});
 		refreshTable();
+
 	}
 
-	private void populateFields() 
-	{
-		try
-		{
+	private void populateFields() {
+		try {
 			idTextField.setText(table.getModel()
 					.getValueAt(table.getSelectedRow(), 0).toString());
 			firstNameTextField.setText(table.getModel()
@@ -163,31 +166,29 @@ public class ManagerSwingApp
 			lastNameTextField.setText(table.getModel()
 					.getValueAt(table.getSelectedRow(), 2).toString());
 			
-		} 
-		catch (Exception e) 
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void doSave() 
-	{
+	public void doSave() {
 		String id = idTextField.getText();
 		String firstName = firstNameTextField.getText();
 		String lastName = lastNameTextField.getText();
-		Gender gender = ManagerManagement.getRandomGender();
-		Manager manager = new Manager(id, firstName, lastName, gender);
+		//Gender gender = (Gender) genderComboBox.getSelectedItem();
+		Manager manager = new Manager(id, firstName, lastName, null);
 		managerRepository.save(manager);
+		// table.clearSelection();
 		refreshTable();
 	}
-	
-	public void doDelete()
+
+	public void doDelete() 
 	{
-		String id = idTextField.getText();
+		String id = idTextField.getText();		
 		managerRepository.delete(id);
 		refreshTable();
 	}
-	
+
 	public void doNew() 
 	{
 		String id = UUID.randomUUID().toString();
@@ -195,19 +196,19 @@ public class ManagerSwingApp
 		firstNameTextField.setText("");
 		lastNameTextField.setText("");
 	}
-	
-	public void viewAllEmployees()
+
+	public void viewAllStudents() 
 	{
-		EmployeeSwingApp employeeFrame = new EmployeeSwingApp();
-		employeeFrame.setVisible(true);		
+		EmployeeSwingApp employeeSwingApp = new EmployeeSwingApp();
+		employeeSwingApp.setVisible(true);
 	}
-	
-	public void viewGroup()
+
+	public void viewClass()
 	{
 		String id = idTextField.getText();
 		Manager manager = null;
 		manager = ManagerManagement.findID(id, managers);
-		if(manager != null)
+		if (manager != null)
 		{
 			EmployeeGroup employeeGroup = new EmployeeGroup(manager);
 			employeeGroup.setVisible(true);
@@ -216,15 +217,15 @@ public class ManagerSwingApp
 
 	private void refreshTable() 
 	{
-		// swingTeacherModel = new SwingTeacherModel();
 		Object[][] data = null;
-
-		data = new Object[managers.size()][3];
+		managers = copyIterator(managerRepository.findAll().iterator());
+		data = new Object[managers.size()][4];
 		int i = 0;
 		for (Manager manager : managers) {
 			data[i][0] = manager.getId();
 			data[i][1] = manager.getFirstName();
 			data[i][2] = manager.getLastName();
+			//data[i][3] = manager.getGender();
 			i++;
 		}
 		nonEditableDefaultTableModel.setDataVector(data, columnNames);
@@ -234,10 +235,9 @@ public class ManagerSwingApp
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize()
-	{
+	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 601, 499);
+		frame.setBounds(100, 100, 618, 584);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -283,7 +283,7 @@ public class ManagerSwingApp
 				doSave();
 			}
 		});
-		btnSave.setBounds(44, 412, 89, 23);
+		btnSave.setBounds(44, 497, 89, 23);
 		frame.getContentPane().add(btnSave);
 
 		JButton btnDelete = new JButton("Delete");
@@ -292,7 +292,7 @@ public class ManagerSwingApp
 				doDelete();
 			}
 		});
-		btnDelete.setBounds(169, 412, 89, 23);
+		btnDelete.setBounds(159, 497, 89, 23);
 		frame.getContentPane().add(btnDelete);
 
 		JButton btnNewButton = new JButton("New");
@@ -309,27 +309,30 @@ public class ManagerSwingApp
 		idTextField.setBounds(159, 285, 325, 20);
 		frame.getContentPane().add(idTextField);
 		idTextField.setColumns(10);
-		
-		btnViewAllEmployees = new JButton("View All Employees");
-		btnViewAllEmployees.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent e) 
-			{
-				viewAllEmployees();
+
+		btnViewAllStudents = new JButton("View all Employees");
+		btnViewAllStudents.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				viewAllStudents();
 			}
 		});
-		btnViewAllEmployees.setBounds(0, 260, 121, 23);
-		frame.getContentPane().add(btnViewAllEmployees);
-		
-		btnViewGroup = new JButton("View All Group");
-		btnViewGroup.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent e) 
-			{
-				viewGroup();
+		btnViewAllStudents.setBounds(0, 260, 121, 23);
+		frame.getContentPane().add(btnViewAllStudents);
+
+		btnViewClass = new JButton("View Group");
+		btnViewClass.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				viewClass();
 			}
 		});
-		btnViewGroup.setBounds(300, 412, 144, 23);
-		frame.getContentPane().add(btnViewGroup);
+		btnViewClass.setBounds(293, 497, 144, 23);
+		frame.getContentPane().add(btnViewClass);
+
+		lblGender = new JLabel("Gender");
+		lblGender.setBounds(44, 416, 77, 14);
+		frame.getContentPane().add(lblGender);
+
+
 	}
+	
 }

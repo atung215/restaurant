@@ -2,38 +2,39 @@ package ca.bcit.comp2613.restaurant;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.JSeparator;
 
 import ca.bcit.comp2613.restaurant.model.Employee;
 import ca.bcit.comp2613.restaurant.model.Manager;
-import ca.bcit.comp2613.restaurant.util.ManagerManagement;
 
-public class EmployeeGroup extends JFrame 
-{
+public class EmployeeGroup extends JFrame {
+
 	private JTable table;
 	private JTextField firstNameTextField;
 	private JTextField lastNameTextField;
 	private JLabel lblLastName;
 	private JLabel lblId;
-	private NonEditableDefaultTableModel employeeModel;
-	public String[] columnNames = new String[] { "id", "First Name", "Last Name" };
+	private NonEditableDefaultTableModel swingStudentModel;
+	public String[] columnNames = new String[] { "id", "First Name",
+			"Last Name" };
 	private JTextField idTextField;
+	private Manager manager;
 	private JButton btnClose;
 	private JTextField addTextField;
 	private JLabel lblStudentId;
-	
-	private Manager manager;
 
 	public EmployeeGroup(Manager manager) 
 	{
@@ -45,8 +46,6 @@ public class EmployeeGroup extends JFrame
 
 	private void initTable() 
 	{
-
-		// table = new JTable(swingStudentModel);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getSelectionModel().addListSelectionListener(
 				new ListSelectionListener() {
@@ -62,8 +61,7 @@ public class EmployeeGroup extends JFrame
 
 	}
 
-	private void populateFields() 
-	{
+	private void populateFields() {
 		try {
 			idTextField.setText(table.getModel()
 					.getValueAt(table.getSelectedRow(), 0).toString());
@@ -75,43 +73,40 @@ public class EmployeeGroup extends JFrame
 		}
 	}
 
-	public void removeFromClass() 
-	{
+	public void removeFromClass() {
 		String id = idTextField.getText();
 		
+		//Student student = new Student(id, null, null);
+		//TeacherUtil.removeFromClass (teacher, student);
 		ManagerSwingApp.customQueryHelper.removeEmployeesFromManager(manager.getId(), Long.parseLong(id));
 		refreshTable();
 	}
 
-	public void doAdd() 
-	{
-		try
-		{
+	public void doAdd() {
+		try {
 			String id = addTextField.getText();
+			//Student student = new Student(id, null, null);
+			//TeacherUtil.addToClass (teacher, student, TeacherSwingApplication.students);
 			ManagerSwingApp.customQueryHelper.addEmployeesToManager(manager.getId(), Long.parseLong(id));
-		} 
-		catch (Exception e)
-		{
-		}
+		} catch (Exception e) {}
 		refreshTable();
 	}
 
 	private void refreshTable() 
 	{
+		// swingStudentModel = new SwingStudentModel();
 		Object[][] data = null;
 		List<Employee> employees = ManagerSwingApp.customQueryHelper.getEmployeesOfManager(manager.getId());
-		if (employees != null)
-		{
+		if (employees != null) {
 			data = new Object[employees.size()][3];
 			int i = 0;
-			for (Employee employee : manager.getEmployees()) 
-			{
+			for (Employee employee : employees) {
 				data[i][0] = employee.getId();
 				data[i][1] = employee.getFirstName();
 				data[i][2] = employee.getLastName();
 				i++;
 			}
-			employeeModel.setDataVector(data, columnNames);
+			swingStudentModel.setDataVector(data, columnNames);
 			table.repaint();
 		}
 	}
@@ -126,9 +121,9 @@ public class EmployeeGroup extends JFrame
 		this.getContentPane().setLayout(null);
 
 		// table = new JTable();
-		employeeModel = new NonEditableDefaultTableModel();
+		swingStudentModel = new NonEditableDefaultTableModel();
 
-		table = new JTable(employeeModel);
+		table = new JTable(swingStudentModel);
 
 		// table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		// table.setBounds(0, 11, 585, 247);
@@ -201,7 +196,7 @@ public class EmployeeGroup extends JFrame
 		getContentPane().add(addTextField);
 		addTextField.setColumns(10);
 		
-		lblStudentId = new JLabel("Student ID to Add");
+		lblStudentId = new JLabel("Employee ID To Add");
 		lblStudentId.setBounds(159, 562, 125, 14);
 		getContentPane().add(lblStudentId);
 		
