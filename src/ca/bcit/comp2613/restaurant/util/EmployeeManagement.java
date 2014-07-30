@@ -11,6 +11,7 @@ import org.apache.log4j.PropertyConfigurator;
 
 import ca.bcit.comp2613.restaurant.model.Employee;
 import ca.bcit.comp2613.restaurant.model.Gender;
+import ca.bcit.comp2613.restaurant.model.Manager;
 
 
 public class EmployeeManagement
@@ -139,6 +140,24 @@ public class EmployeeManagement
 		return null;
 	}
 
+	public static void assignEmployeesToManagers(List<Manager> managers, List<Employee> employees)
+	{
+		int employeeTotal = employees.size();
+		for(Manager manager : managers)
+		{
+			Random rand = new Random();
+			for(int count = 0; count < 10; count++)
+			{
+				int randEmployee = rand.nextInt(employeeTotal);
+				Employee randomEmployee = employees.get(randEmployee);
+				if(manager.getEmployees() == null)
+				{
+					manager.setEmployees(new ArrayList<Employee>());
+				}
+				ManagerManagement.addToGroup(manager, randomEmployee, employees);
+			}
+		}
+	}
 	
 
 } // end class
