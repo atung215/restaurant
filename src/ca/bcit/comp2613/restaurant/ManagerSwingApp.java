@@ -3,9 +3,14 @@ package ca.bcit.comp2613.restaurant;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,10 +21,15 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import ca.bcit.comp2613.restaurant.model.Employee;
 import ca.bcit.comp2613.restaurant.model.Manager;
+import ca.bcit.comp2613.restaurant.repository.CustomQueryHelper;
+import ca.bcit.comp2613.restaurant.repository.EmployeeRepository;
+import ca.bcit.comp2613.restaurant.repository.ManagerRepository;
 import ca.bcit.comp2613.restaurant.util.EmployeeManagement;
 import ca.bcit.comp2613.restaurant.util.ManagerManagement;
 
@@ -40,6 +50,9 @@ public class ManagerSwingApp
 	public static List<Employee> employees;
 	private JButton btnViewAllEmployees;
 	private JButton btnViewGroup;
+	public static ManagerRepository managerRepository;
+	public static EmployeeRepository employeeRepository;
+	public static CustomQueryHelper customQueryHelper;
 	
 	
 	/**
@@ -63,15 +76,57 @@ public class ManagerSwingApp
 			}
 		});
 	}
+	
+	public static <M> List<M> copyIterator(Iterator<M> iter)
+	{
+		List<M> copy = new ArrayList();
+		while(iter.hasNext())
+		{
+			copy.add(iter.next());
+		}
+		return copy;
+	}
 
 	/**
 	 * Create the application.
 	 */
+	public static boolean useInMemoryDB = true;
+	
 	public ManagerSwingApp() 
 	{
-		managers = ManagerManagement.createManager();
-		employees = EmployeeManagement.createEmployee();
-		EmployeeManagement.assignEmployeesToManagers(managers, employees);
+		ConfigurableApplicationContext context = null;
+		if(useInMemoryDB)
+		{
+			context = SpringApplication.run(H2Config.class);
+			try
+			{
+				org.h2.tools.Server.createWebServer(null).start();
+				DataSource dataSource = (DataSource) context.getBean("dataSource");
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			context = SpringApplication.run(TestDriveSQL.class);
+		}
+		
+		for(String beanDefinitionName : context.getBeanDefinitionNames())
+		{
+			System.out.println(beanDefinitionName);
+		}
+		
+		EntityManagerFactory emf = (EntityManagerFactory) context.getBean("entityManagerFactory");
+		
+		
+		
+		managerRepository = context.getBean(ManagerRepository.class);
+		employeeRepository = context.getBean(EmployeeRepository.class);
+		customQueryHelper = new CustomQueryHelper(emf);
+		managers = copyIterator(managerRepository.findAll().iterator());
+		employees = copyIterator(employeeRepository.findAll().iterator());
 		initialize();
 		initTable();
 	}

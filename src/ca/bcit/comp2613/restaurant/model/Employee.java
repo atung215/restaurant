@@ -2,12 +2,30 @@ package ca.bcit.comp2613.restaurant.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+
+@Entity
 public class Employee implements Comparable<Employee>
 {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String firstName;
 	private String lastName;
-	private String id;
+	private Long id;
 	private Gender sex;
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+	
+	@JoinTable(name = "manager_employee", 
+	joinColumns = { @JoinColumn(name = "employee_id")	}, 
+	inverseJoinColumns = { @JoinColumn(name = "manager_id") } )
 	
 	private List<Manager> managers;
 
@@ -16,12 +34,23 @@ public class Employee implements Comparable<Employee>
 		
 	}
 		
-	public Employee( String id, String firstName, String lastName, Gender sex) 
+	public Employee( Long id, String firstName, String lastName, Gender sex) 
 	{
 		// TODO Auto-generated constructor stub
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.id = id;
+		this.sex = sex;
+	}
+
+	
+	
+	public Employee( String id, String firstName, String lastName, Gender sex) 
+	{
+		// TODO Auto-generated constructor stub
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.id = Long.parseLong(id);
 		this.sex = sex;
 	}
 
@@ -50,15 +79,10 @@ public class Employee implements Comparable<Employee>
 
 	
 	// get set id
-	public String getId() 
+	public Long getId() 
 	{
 		return id;
-	}
-
-	public void setId(String id)
-	{
-		this.id = id;
-	}
+	}	
 	
 	// get set gender
 	public Gender getSex() 

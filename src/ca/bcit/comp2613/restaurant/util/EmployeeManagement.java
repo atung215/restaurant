@@ -128,7 +128,7 @@ public class EmployeeManagement
 		}		
 	}
 
-	public static Employee findID(String id, List<Employee> employees) 
+	public static Employee findID(Long id, List<Employee> employees) 
 	{
 		for(Employee allEmployees : employees)
 		{

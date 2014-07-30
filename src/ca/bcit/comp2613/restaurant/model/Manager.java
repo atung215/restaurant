@@ -2,12 +2,27 @@ package ca.bcit.comp2613.restaurant.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+
+@Entity
 public class Manager 
 {
+	@Id
 	private String firstName;
 	private String lastName;
 	private String id;
 	private Gender sex;
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+	
+	@JoinTable(name = "manager_employee",
+	joinColumns = { @JoinColumn(name = "manager_id") },
+	inverseJoinColumns = { @JoinColumn(name = "employee_id") } )
 	
 	private List<Employee> employees;
 	

@@ -42,8 +42,6 @@ public class EmployeeSwingApp extends JFrame {
 
 	private void initTable() 
 	{
-
-		// table = new JTable(swingStudentModel);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getSelectionModel().addListSelectionListener(
 				new ListSelectionListener() {
@@ -59,8 +57,10 @@ public class EmployeeSwingApp extends JFrame {
 
 	}
 
-	private void populateFields() {
-		try {
+	private void populateFields()
+	{
+		try
+		{
 			idTextField.setText(table.getModel()
 					.getValueAt(table.getSelectedRow(), 0).toString());
 			firstNameTextField.setText(table.getModel()
@@ -74,9 +74,16 @@ public class EmployeeSwingApp extends JFrame {
 		String id = idTextField.getText();
 		String firstName = firstNameTextField.getText();
 		String lastName = lastNameTextField.getText();
-		Employee employee = new Employee(id, firstName, lastName, null);
-		EmployeeManagement.save(ManagerSwingApp.employees, employee);
-		//table.clearSelection();
+		Employee employee = null;
+		if(id.equals(""))
+		{
+			employee = new Employee((Long)null, firstName, lastName, null);
+		}
+		else
+		{
+			employee = new Employee(id, firstName, lastName, sex);
+		}
+		ManagerSwingApp.employeeRepository.save(employee);
 		refreshTable();
 	}
 	
